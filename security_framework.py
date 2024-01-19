@@ -3,7 +3,12 @@ from flask_security import *
 from db.models import db, User, Role
 from werkzeug.security import *
 
+# Create an instance of SQLAlchemyUserDatastore. This is a datastore for Flask-Security that uses SQLAlchemy.
+# It provides an interface for Flask-Security to interact with the User and Role models.
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+
+# Create an instance of Security. This is the main class for Flask-Security.
+# It ties together the various components of Flask-Security for use in your application.
 security = Security()
 
 

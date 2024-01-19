@@ -4,6 +4,7 @@ from sqlalchemy.ext.mutable import MutableList
 from flask_security import UserMixin, RoleMixin, AsaList
 from datetime import datetime
 
+# Create an instance of the SQLAlchemy class. This object will be used as the database adapter.
 db = SQLAlchemy()
 
 class RolesUsers(db.Model):
