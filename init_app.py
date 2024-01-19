@@ -1,6 +1,6 @@
 import os
 from app import create_app
-from security_framework import security, user_datastore, admin_password, generate_password_hash, verify_password
+from security_framework import security, user_datastore, admin_password, create_roles, admin_user_creation
 
 from db.models import db, User, Role
 from datetime import datetime
@@ -15,24 +15,15 @@ with app.app_context():
         db.session.commit()
         print('Database tables created')
 
-        admin = Role(name='admin', description='app_admin')
-        db.session.add(admin)
+        create_roles()
+        print('Roles added, ie admin, user')
 
-        user = Role(name='user', description='gen_user')
-        db.session.add(user)
-
-        print('Roles added, ie admin, librarian, student')
-        db.session.commit()
-
-        hashed_password = generate_password_hash(admin_password)
-        usr_librarian = user_datastore.create_user(email='abc@abc.com', password=hashed_password)
-        user_datastore.add_role_to_user(usr_librarian, 'admin')
-        if usr_librarian:
-            print('Librarian added')
+        admin_user_creation()
+        print('Admin created')
 
         db.session.commit()
 
-        test_password = '12345678'
+        
 
 
     except Exception as e:
