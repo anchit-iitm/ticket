@@ -1,5 +1,6 @@
-import os
+import os, secrets
 from datetime import timedelta
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,7 +18,7 @@ class LocalDev(Config):
     # security configurations
     SECRET_KEY = "TEMPORARY_KEY_FOR_DEV" #os.environ.get('FLASK_SECRET')
     SECURITY_PASSWORD_HASH = 'bcrypt'
-    SECURITY_PASSWORD_SALT = "TEMPORARY_KEY_FOR_DEV" #os.environ.get('SECURITY_SECRET')
+    SECURITY_PASSWORD_SALT = secrets.SystemRandom().getrandbits(128)
     SECURITY_REGISTERABLE = True
     SECURITY_JOIN_USER_ROLES = True
     SECURITY_TRACKABLE = True
@@ -33,13 +34,6 @@ class LocalDev(Config):
     SECURITY_EMAIL_REGISTERABLE = True
     # SECURITY_LOGIN_URL = '/auth/login'
     # SECURITY_LOGIN_USER_TEMPLATE = 'login_test.html'
-
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
-    JWT_SECRET_KEY = "TEMPORARY_KEY_FOR_DEV" #os.environ.get('SECURITY_SECRET')
-    WTF_CSRF_ENABLED = False
-    JSON_SORT_KEYS = False
-
     # debug application
     DEBUG = True
 
