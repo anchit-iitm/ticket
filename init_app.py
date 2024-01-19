@@ -1,6 +1,6 @@
 import os
 from app import create_app
-from security_framework import security, user_datastore, admin_password, create_roles, admin_user_creation
+from security_framework import security, user_datastore, create_roles, admin_user_creation
 
 from db.models import db, User, Role
 from datetime import datetime
@@ -18,8 +18,8 @@ with app.app_context():
         create_roles()
         print('Roles added, ie admin, user')
 
-        admin_user_creation()
-        print('Admin created')
+        if admin_user_creation():
+            print('Admin created')
 
         db.session.commit()
 

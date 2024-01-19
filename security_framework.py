@@ -47,6 +47,8 @@ def admin_user_creation():
         user_datastore.add_role_to_user(user_user, 'admin')
         # Commit the session to save the changes
         db.session.commit()
+        return True
+    return False
 
 def admin_user_status_check():      #test
     admin_role = Role.query.filter_by(name='admin').first()
