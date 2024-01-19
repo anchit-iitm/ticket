@@ -4,6 +4,7 @@ from sqlalchemy.ext.mutable import MutableList
 from flask_security import UserMixin, RoleMixin, AsaList
 from datetime import datetime
 
+
 # Create an instance of the SQLAlchemy class. This object will be used as the database adapter.
 db = SQLAlchemy()
 
@@ -56,7 +57,7 @@ class User(db.Model, UserMixin):
 
 
 class Venue(db.Model):
-    __tablename__ = 'venue'
+    __tablename__ = 'Venue'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(), nullable=False)
@@ -65,7 +66,7 @@ class Venue(db.Model):
     
 
 class Show(db.Model):
-    __tablename__ = 'show'
+    __tablename__ = 'Show'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     description = db.Column(db.Text())
@@ -74,13 +75,13 @@ class Show(db.Model):
     ticket_price = db.Column(db.Float())
     total_tickets = db.Column(db.Integer())
     avail_ticket = db.Column(db.Integer())
-    venue_id = db.Column(db.Integer, db.ForeignKey('venue.id'))
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
 
 class Booking(db.Model):
-    __tablename__ = 'booking'
+    __tablename__ = 'Booking'
     id = db.Column(db.Integer, primary_key=True) 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
+    show_id = db.Column(db.Integer, db.ForeignKey('Show.id'))
     booking_date = db.Column(db.DateTime())
     number_of_tickets = db.Column(db.Integer())
     total_amount = db.Column(db.Float())

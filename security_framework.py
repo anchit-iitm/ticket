@@ -1,6 +1,7 @@
 import bcrypt
+from flask import jsonify, make_response
 from flask_security import *
-from db.models import db, User, Role
+from db.models import db, User, Role, UserActivity
 from werkzeug.security import *
 
 # Create an instance of SQLAlchemyUserDatastore. This is a datastore for Flask-Security that uses SQLAlchemy.
@@ -63,3 +64,17 @@ def admin_user_status_check():      #test
     if admin_user and admin_user.active == True and admin_user.email == 'abc@abc.com':
         return True
     return False
+
+def login_function(email, password):
+    user = user_datastore.find_user(email=email)
+
+    if user :
+        if bcrypt.checkpw(password.encode('utf-8'), user.password):
+            auth_token = user.get_auth_token()
+            login_user(user)
+            activity = UserActivity(user_id=user.id, activity_type='login')
+            db.session.add(activity)
+            db.session.commit()
+            return True
+    else:
+        return False
