@@ -58,38 +58,38 @@ class User(db.Model, UserMixin):
 
 class Venue(db.Model):
     __tablename__ = 'Venue'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    address = db.Column(db.String(), nullable=False)
-    capacity = db.Column(db.Integer, nullable=False)
-    description = db.Column(db.String())
+    id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each venue
+    name = db.Column(db.String(255), nullable=False)  # Name of the venue
+    address = db.Column(db.String(), nullable=False)  # Address of the venue
+    capacity = db.Column(db.Integer, nullable=False)  # Maximum capacity of the venue
+    description = db.Column(db.String())  # Description of the venue
     
 
 class Show(db.Model):
     __tablename__ = 'Show'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    description = db.Column(db.Text())
-    tags = db.Column(db.String(255))
-    rating = db.Column(db.Float())
-    ticket_price = db.Column(db.Float())
-    total_tickets = db.Column(db.Integer())
-    avail_ticket = db.Column(db.Integer())
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
+    id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each show
+    name = db.Column(db.String(255))  # Name of the show
+    description = db.Column(db.Text())  # Description of the show
+    tags = db.Column(db.String(255))  # Tags associated with the show
+    rating = db.Column(db.Float())  # Rating of the show
+    ticket_price = db.Column(db.Float())  # Price of a ticket for the show
+    total_tickets = db.Column(db.Integer())  # Total number of tickets available for the show
+    avail_ticket = db.Column(db.Integer())  # Number of tickets currently available for the show
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))  # Foreign key referencing the venue where the show is held
 
 class Booking(db.Model):
     __tablename__ = 'Booking'
-    id = db.Column(db.Integer, primary_key=True) 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    show_id = db.Column(db.Integer, db.ForeignKey('Show.id'))
-    booking_date = db.Column(db.DateTime())
-    number_of_tickets = db.Column(db.Integer())
-    total_amount = db.Column(db.Float())
-    booked_tickets = db.Column(db.Integer())
+    id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each booking
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # Foreign key referencing the user who made the booking
+    show_id = db.Column(db.Integer, db.ForeignKey('Show.id'))  # Foreign key referencing the show that was booked
+    booking_date = db.Column(db.DateTime())  # Date when the booking was made
+    number_of_tickets = db.Column(db.Integer())  # Number of tickets booked
+    total_amount = db.Column(db.Float())  # Total amount paid for the booking
+    booked_tickets = db.Column(db.Integer())  # Number of tickets booked
 
 class UserActivity(db.Model):
     __tablename__ = 'UserActivity'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    activity_type = db.Column(db.String(50), nullable=False)  # e.g., "login", "visit", etc.
-    activity_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each user activity
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Foreign key referencing the user who performed the activity
+    activity_type = db.Column(db.String(50), nullable=False)  # Type of activity performed, e.g., "login", "visit", etc.
+    activity_timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp when the activity was performed
