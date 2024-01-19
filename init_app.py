@@ -1,6 +1,7 @@
 import os
 from app import create_app
-from security_framework import security, user_datastore
+from security_framework import security, user_datastore, admin_password, generate_password_hash, verify_password
+
 from db.models import db, User, Role
 from datetime import datetime
 
@@ -23,13 +24,16 @@ with app.app_context():
         print('Roles added, ie admin, librarian, student')
         db.session.commit()
 
-
-        usr_librarian = user_datastore.create_user(email='abc@abc.com', password='12345678', roles=[admin])
+        hashed_password = generate_password_hash(admin_password)
+        usr_librarian = user_datastore.create_user(email='abc@abc.com', password=hashed_password)
         user_datastore.add_role_to_user(usr_librarian, 'admin')
         if usr_librarian:
             print('Librarian added')
 
         db.session.commit()
+
+        test_password = '12345678'
+
 
     except Exception as e:
         print(f"Error creating database tables: {e}")
