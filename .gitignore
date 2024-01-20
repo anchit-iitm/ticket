@@ -2,3 +2,5 @@
 /__pycache__
 /db/__pycache__
 /routes/__pycache__
+routes/__pycache__/auth.cpython-310.pyc
+routes/__pycache__/venue.cpython-310.pyc
