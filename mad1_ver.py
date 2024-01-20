@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_security import Security, SQLAlchemyUserDatastore, login_required, roles_required, UserMixin, current_user, login_user, logout_user, auth_token_required
 from flask_cors import CORS
 from datetime import datetime, timedelta
+from sqlalchemy import or_
 
 
 app = Flask(__name__)
@@ -189,9 +190,9 @@ def user_logout():
 
 
 @app.route('/api/venues-and-shows', methods=['GET'])
-@roles_required('admin')  # Only users with 'admin' role can access this endpoint
-@auth_token_required
-@cache.cached(timeout=10)  # Cache for 10 minutes
+# @roles_required('admin')  # Only users with 'admin' role can access this endpoint
+# @auth_token_required
+# @cache.cached(timeout=10)  # Cache for 10 minutes
 def get_venues_and_shows():
     venues = Venue.query.all()
     shows = Show.query.all()
@@ -225,7 +226,7 @@ def get_venues_and_shows():
 
 @app.route('/api/create-venue', methods=['POST'])
 @roles_required('admin')  # Only users with 'admin' role can access this endpoint
-@auth_token_required
+# @auth_token_required
 def create_venue():
     data = request.get_json()
     name = data['name']
@@ -246,7 +247,7 @@ def create_venue():
 
 @app.route('/api/venue/<int:venue_id>', methods=['GET', 'PUT'])
 @roles_required('admin')  # Only users with 'admin' role can access this endpoint
-@auth_token_required
+# @auth_token_required
 def venue_details(venue_id):
     venue = Venue.query.get(venue_id)
     if not venue:
@@ -278,7 +279,7 @@ def venue_details(venue_id):
 
 @app.route('/api/venue/<int:venue_id>/show/<int:show_id>', methods=['GET','PUT'])
 @roles_required('admin')  # Only users with 'admin' role can access this endpoint
-@auth_token_required
+# @auth_token_required
 def modify_show(show_id, venue_id):
     # data = request.get_json()
     show = Show.query.filter_by(id=show_id, venue_id=venue_id).first()
@@ -330,7 +331,7 @@ def modify_show(show_id, venue_id):
 
 @app.route('/api/shows', methods=['POST'])
 @roles_required('admin')  # This ensures only users with the 'admin' role can access this endpoint
-@auth_token_required
+# @auth_token_required
 def createshow():
     data = request.get_json()
     name = data['name']
@@ -354,7 +355,7 @@ def createshow():
 
 @app.route('/api/venue/<int:venue_id>/show/<int:show_id>', methods=['DELETE'])
 @roles_required('admin')  # Only users with 'admin' role can delete a show
-@auth_token_required
+# @auth_token_required
 def delete_show(venue_id, show_id):
     show = Show.query.filter_by(id=show_id, venue_id=venue_id).first()
 
@@ -371,7 +372,7 @@ def delete_show(venue_id, show_id):
 
 @app.route('/api/venue/<int:venue_id>', methods=['DELETE'])
 @roles_required('admin')  # Only users with 'admin' role can delete a venue
-@auth_token_required
+# @auth_token_required
 def delete_venue(venue_id):
     venue = Venue.query.get(venue_id)
 
@@ -393,7 +394,7 @@ def delete_venue(venue_id):
 
 
 @app.route('/api/search/theatres', methods=['GET'])
-# @auth_token_required
+# # @auth_token_required
 def search_theatres():
     location = request.args.get('location', '').strip()
 
@@ -408,7 +409,7 @@ def search_theatres():
     return jsonify([theatre.serialize() for theatre in theatres])
 
 @app.route('/api/search/shows', methods=['GET'])
-# @auth_token_required
+# # @auth_token_required
 def search_shows():
     tags = request.args.get('tags', '').strip()
     rating = request.args.get('rating', 0.0)
@@ -426,8 +427,8 @@ def search_shows():
 #___________________________________________________________________________________________________________________________________________________________________________________user#
 
 @app.route('/api/venues', methods=['GET'])
-@auth_token_required
-@cache.cached(timeout=10)  # Cache for 10 minutes
+# @auth_token_required
+# @cache.cached(timeout=10)  # Cache for 10 minutes
 def list_venues():
     def extract_venue_data(venue):
         return {
@@ -466,7 +467,7 @@ def list_venues():
         return jsonify({'message': 'An error occurred while fetching venues'}), 500
 
 @app.route('/api/show/<show_id>', methods=['GET'])
-@auth_token_required
+# @auth_token_required
 def list_show(show_id):
     # data = request.get_json()
     # show_id = data.get('show_id')
@@ -488,7 +489,7 @@ def list_show(show_id):
         return jsonify({'message': 'An error occurred while fetching show'}), 500
 
 @app.route('/api/bookings', methods=['POST'])
-@auth_token_required
+# @auth_token_required
 def create_booking():
     data = request.get_json()
     show_id = data.get('show_id')

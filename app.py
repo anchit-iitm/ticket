@@ -45,9 +45,25 @@ api_handler.add_resource(login, '/api/login')
 api_handler.add_resource(logout, '/api/logout')
 api_handler.add_resource(register, '/api/register')
 
+from routes.venue_show import *
+api_handler.add_resource(VenueShow, '/api/venues-and-shows')
+
 from routes.venue import *
-api_handler.add_resource(allvenue, '/api/venue')
+api_handler.add_resource(create_venue, '/api/create-venue')
 api_handler.add_resource(singlevenue, '/api/venue/<int:id>')
+
+from routes.show import *
+api_handler.add_resource(eachshow, '/api/venue/<int:venue_id>/show/<int:show_id>')
+api_handler.add_resource(show, '/api/shows')
+
+from routes.search import *
+api_handler.add_resource(search_theatres, '/api/search/theatres')
+api_handler.add_resource(search_shows, '/api/search/shows')
+
+from routes.user import *
+api_handler.add_resource(create_booking, '/api/bookings')
+api_handler.add_resource(list_show, '/api/show/<show_id>')
+api_handler.add_resource(list_venues, '/api/venues')
 
 if __name__ == '__main__':        # If this script is run directly (not imported), then run the app
     app.run()

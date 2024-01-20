@@ -3,7 +3,7 @@ from db.models import *
 from security_framework import roles_accepted, current_user, auth_token_required
 from flask_restful import Resource
 
-class allvenue(Resource):
+class create_venue(Resource):
     # @roles_accepted('admin')
     # @auth_token_required
     def post(self):
@@ -26,8 +26,8 @@ class allvenue(Resource):
 
 
 class singlevenue(Resource):
-    def patch(self, id):
-        venue = Venue.query.get(id)
+    def put(self, venue_id):
+        venue = Venue.query.get(venue_id)
         if not venue:
             return make_response(jsonify({'message': 'Venue not found'}), 404)
         data = request.get_json()
@@ -42,8 +42,8 @@ class singlevenue(Resource):
         db.session.commit()
         return make_response(jsonify({'message': 'Venue updated successfully'}), 200)
     
-    def get(self, id):
-        venue = Venue.query.get(id)
+    def get(self, venue_id):
+        venue = Venue.query.get(venue_id)
         if venue:
             venue_info = {
                 'id': venue.id,
@@ -54,3 +54,22 @@ class singlevenue(Resource):
             }
             return make_response(jsonify(venue_info), 200)
         return make_response(jsonify({'message': 'Venue not found'}), 404)
+    
+    def delete(self, venue_id):
+        venue = Venue.query.get(venue_id)
+
+        if not venue:
+            return make_response(jsonify({'message': 'Venue not found'}), 404)
+
+        try:
+            # Delete all shows associated with the venue
+            Show.query.filter_by(venue_id=venue_id).delete()
+
+            # Delete the venue itself
+            db.session.delete(venue)
+            db.session.commit()
+
+            return make_response(jsonify({'message': 'Venue and associated shows deleted successfully'}), 200)
+        except:
+            db.session.rollback()
+            return make_response(jsonify({'message': 'Error deleting venue'}), 500)
