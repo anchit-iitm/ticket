@@ -17,7 +17,7 @@ class search_theatres(Resource):
         else:
             theatres = []
 
-        return make_response(jsonify([theatre.serialize() for theatre in theatres]))
+        return make_response(jsonify([theatre.search() for theatre in theatres]))
     
 class search_shows(Resource):
     def get(self):
@@ -32,4 +32,4 @@ class search_shows(Resource):
         # Filter shows by rating
         filtered_shows = [show for show in shows if show.rating >= float(rating)]
 
-        return make_response(jsonify([show.serialize() for show in filtered_shows]))
+        return make_response(jsonify([show.search() for show in filtered_shows]))

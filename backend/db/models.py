@@ -63,6 +63,18 @@ class Venue(db.Model):
     address = db.Column(db.String(), nullable=False)  # Address of the venue
     capacity = db.Column(db.Integer, nullable=False)  # Maximum capacity of the venue
     description = db.Column(db.String())  # Description of the venue
+
+    def search(self):
+        """
+        This method is used to convert the Venue object into a dictionary format which can be used for JSON serialization.
+        """
+        return {
+            'id': self.id,  # Unique identifier for the Venue
+            'name': self.name,  # Name of the Venue
+            'address': self.address,  # Address of the Venue
+            'capacity': self.capacity,  # Capacity of the Venue
+            'description': self.description  # Description of the Venue
+        }
     
 
 class Show(db.Model):
@@ -76,6 +88,22 @@ class Show(db.Model):
     total_tickets = db.Column(db.Integer())  # Total number of tickets available for the show
     avail_ticket = db.Column(db.Integer())  # Number of tickets currently available for the show
     venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))  # Foreign key referencing the venue where the show is held
+
+    def search(self):
+        """
+        This method is used to convert the object into a dictionary format which can be used for JSON serialization.
+        """
+        return {
+            'id': self.id,  # Unique identifier for the object
+            'name': self.name,  # Name of the object
+            'description': self.description,  # Description of the object
+            'tags': self.tags,  # Tags associated with the object
+            'rating': self.rating,  # Rating of the object
+            'ticket_price': self.ticket_price,  # Price of the ticket for the object
+            'total_tickets': self.total_tickets,  # Total number of tickets available for the object
+            'avail_ticket': self.avail_ticket,  # Number of tickets currently available
+            'venue_id': self.venue_id  # Identifier of the venue where the object is located
+        }
 
 class Booking(db.Model):
     __tablename__ = 'Booking'
