@@ -1,6 +1,6 @@
 from flask import current_app as app, jsonify, request, make_response
 from db.models import *
-from security_framework import user_datastore, bcrypt, login_user, roles_accepted, login_function, current_user
+from security_framework import user_datastore, bcrypt, login_user, roles_accepted, login_function, current_user, logout_user
 from flask_restful import Resource
 
 
@@ -40,9 +40,15 @@ class login(Resource):
         # return jsonify({'message': 'Hello, World!'})
 
 class logout(Resource):
-    @roles_accepted('admin', 'user')
-    def get(self):
-        activity = UserActivity(user_id=current_user.id, activity_type='logout')
+    # @roles_accepted('admin', 'user')
+    def post(self):
+        data = request.get_json()
+        userid = data.get('uid')
+        role = data.get('role')
+        if not role == 'admin' or role == 'user':
+            return make_response(jsonify({'message': 'Invalid role'}), 400)
+        activity = UserActivity(user_id=userid, activity_type='logout')
         db.session.add(activity)
         db.session.commit()
+        logout_user()
         return make_response(jsonify({'message': 'User logged out successfully'}), 200)

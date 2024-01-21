@@ -67,6 +67,7 @@ export default {
     logoutUser() {
       axios.post(`${API_BASE_URL}/logout`, {
         uid: localStorage.getItem('userId'),
+        role: localStorage.getItem('userRole'),
       })
         .then(response => {
           localStorage.removeItem('userRole');
