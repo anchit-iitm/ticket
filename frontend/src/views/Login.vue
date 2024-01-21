@@ -24,7 +24,7 @@
 <script>
 import axios from 'axios';
 // import { useRoute } from 'vue-router'; // Import the useRoute function
-import { mapMutations } from 'vuex'; // Import the mapMutations function
+// import { mapMutations } from 'vuex'; // Import the mapMutations function
 
 const API_BASE_URL = 'http://localhost:5000/api';
 const BASE_URL = 'http://localhost:5000';
