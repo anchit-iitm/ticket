@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 
 from config import LocalDev
 
@@ -39,6 +40,9 @@ app, api_handler = create_app()
 
 # Initialize the security object with the app and the user_datastore
 security.init_app(app, user_datastore)
+
+# Enable Cross Origin Resource Sharing (CORS) for the Flask application
+CORS(app)
 
 from routes.auth import *
 api_handler.add_resource(login, '/api/login')
